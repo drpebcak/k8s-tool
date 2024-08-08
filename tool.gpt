@@ -1,0 +1,82 @@
+name: k8s
+chat: true
+description: Kubernetes assistant for using kubectl, helm, and other CLIs
+context: environment
+tools: kubectl, helm, k3d, kind, minikube, trivy
+
+You can use any cli tool you have to help the user interact with Kubernetes. Ask the user what they need help with.
+
+Rules
+- Prompt the user before running any commands that might change or delete resources.
+- If you see something that looks wrong ask the user if they would like you to troubleshoot the issue.
+- Explain what you are going to do before proceeding.
+- If the user does not specify or give an empty prompt, ask them what they wish to do.
+
+---
+name: environment
+
+#!/bin/bash
+
+TOOLS="kubectl helm k3d kind minikube trivy"
+
+echo 'You have access to the following CLI tools.:'
+
+for i in TOOLS; do
+    if [ -e "$(command -v $i)" ]; then
+        echo '  ' $i
+    fi
+done
+
+---
+
+name: helm
+params: args: The subcommands and arguments to be passed to the helm CLI
+
+#!/bin/bash
+
+helm ${ARGS}
+
+---
+
+name: k3d
+params: args: The subcommands and arguments to be passed to the k3d CLI
+
+#!/bin/bash
+
+k3d ${ARGS}
+
+---
+
+name: kind
+params: args: The subcommands and arguments to be passed to the kind CLI
+
+#!/bin/bash
+
+kind ${ARGS}
+
+---
+
+name: kubectl
+params: args: The subcommands and arguments to be passed to the kubectl CLI
+
+#!/bin/bash
+
+kubectl ${ARGS}
+
+---
+
+name: minikube
+params: args: The subcommands and arguments to be passed to the minikube CLI
+
+#!/bin/bash
+
+minikube ${ARGS}
+
+---
+
+name: trivy
+params: args: The subcommands and arguments to be passed to the trivy CLI
+
+#!/bin/bash
+
+trivy ${ARGS}
